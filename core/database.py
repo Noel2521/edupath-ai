@@ -5,7 +5,7 @@ New: institution_type (school/college/university), security audit log,
 """
 
 import sqlite3
-import hashlib
+from werkzeug.security import generate_password_hash, check_password_hash
 import os
 from datetime import datetime, timedelta
 
@@ -157,8 +157,12 @@ def create_tables():
 
 # ── Security helpers ──
 
+# Replace with these two functions:
 def hash_password(password: str) -> str:
-    return hashlib.sha256(password.encode()).hexdigest()
+    return generate_password_hash(password)
+
+def verify_password(password: str, password_hash: str) -> bool:
+    return check_password_hash(password_hash, password)
 
 
 def log_audit(user_type, user_id, action, ip_address="", user_agent="", detail=""):
@@ -209,9 +213,11 @@ def register_student(institution_id, full_name, email, password, year_group="", 
 def login_student(email, password):
     conn = get_connection()
     row = conn.execute(
-        "SELECT * FROM students WHERE email=? AND password_hash=?",
-        (email, hash_password(password))
+        "SELECT * FROM students WHERE email=?",
+        (email,)
     ).fetchone()
+    if row and not verify_password(password, row["password_hash"]):
+        row = None
     if row:
         conn.execute("UPDATE students SET last_login=? WHERE id=?", (datetime.now(), row["id"]))
         conn.commit()
@@ -237,9 +243,11 @@ def register_teacher(institution_id, full_name, email, password, role="teacher")
 def login_teacher(email, password):
     conn = get_connection()
     row = conn.execute(
-        "SELECT * FROM teachers WHERE email=? AND password_hash=?",
-        (email, hash_password(password))
+        "SELECT * FROM teachers WHERE email=?",
+        (email,)
     ).fetchone()
+    if row and not verify_password(password, row["password_hash"]):
+        row = None
     if row:
         conn.execute("UPDATE teachers SET last_login=? WHERE id=?", (datetime.now(), row["id"]))
         conn.commit()
