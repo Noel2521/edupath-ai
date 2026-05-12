@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Student Account — EduPath AI
+{% endblock %}
+
+{% block body %}
+
+<section class="auth-page">
+
+  <div class="auth-left">
+
+    <div class="auth-content">
+
+      <div class="auth-badge">
+        🎓 STUDENT REGISTRATION
+      </div>
+
+      <h1>
+        Begin your<br>
+        learning journey.
+      </h1>
+
+      <p>
+        Create your EduPath AI student account and unlock
+        personalized learning plans powered by AI.
+      </p>
+
+      <div class="auth-points">
+
+        <div class="auth-point">
+          📘 AI-generated Study Plans
+        </div>
+
+        <div class="auth-point">
+          📈 Weekly Progress Tracking
+        </div>
+
+        <div class="auth-point">
+          🔔 Smart Academic Reminders
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="auth-right">
+
+    <div class="auth-card">
+
+      <h2>Create Student Account</h2>
+
+      <p class="auth-subtitle">
+        Join EduPath AI and start learning smarter.
+      </p>
+
+      {% if error %}
+      <div class="auth-error">
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <form method="POST">
+
+        <div class="form-group-modern">
+          <label>Institution</label>
+
+          <select name="institution_id" required>
+            {% for institution in institutions %}
+              <option value="{{ institution.id }}">
+                {{ institution.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Full Name</label>
+
+          <input type="text"
+                 name="full_name"
+                 placeholder="John Doe"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Email Address</label>
+
+          <input type="email"
+                 name="email"
+                 placeholder="student@example.com"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Year Group</label>
+
+          <input type="text"
+                 name="year_group"
+                 placeholder="Year 12 / Undergraduate"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Password</label>
+
+          <input type="password"
+                 name="password"
+                 placeholder="Create password"
+                 required>
+        </div>
+
+        <button type="submit" class="btn-auth">
+          Create Account
+        </button>
+
+      </form>
+
+      <div class="auth-footer-link">
+        Already have an account?
+        <a href="{{ url_for('student_login') }}">
+          Sign In
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

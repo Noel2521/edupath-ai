@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}
+Create Teacher Account — EduPath AI
+{% endblock %}
+
+{% block body %}
+
+<section class="auth-page">
+
+  <div class="auth-left teacher-bg">
+
+    <div class="auth-content">
+
+      <div class="auth-badge">
+        📊 TEACHER REGISTRATION
+      </div>
+
+      <h1>
+        Empower your<br>
+        institution with AI.
+      </h1>
+
+      <p>
+        Create your teacher account to manage courses,
+        monitor student performance and track risk insights.
+      </p>
+
+      <div class="auth-points">
+
+        <div class="auth-point">
+          📈 AI Risk Intelligence
+        </div>
+
+        <div class="auth-point">
+          📘 Course Management
+        </div>
+
+        <div class="auth-point">
+          👨‍🎓 Student Monitoring
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="auth-right">
+
+    <div class="auth-card">
+
+      <h2>Create Teacher Account</h2>
+
+      <p class="auth-subtitle">
+        Register your institutional access.
+      </p>
+
+      {% if error %}
+      <div class="auth-error">
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <form method="POST">
+
+        <div class="form-group-modern">
+          <label>Institution</label>
+
+          <select name="institution_id" required>
+            {% for institution in institutions %}
+              <option value="{{ institution.id }}">
+                {{ institution.name }}
+              </option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Full Name</label>
+
+          <input type="text"
+                 name="full_name"
+                 placeholder="John Doe"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Email Address</label>
+
+          <input type="email"
+                 name="email"
+                 placeholder="teacher@example.com"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Password</label>
+
+          <input type="password"
+                 name="password"
+                 placeholder="Create password"
+                 required>
+        </div>
+
+        <button type="submit" class="btn-auth">
+          Create Account
+        </button>
+
+      </form>
+
+      <div class="auth-footer-link">
+        Already have an account?
+        <a href="{{ url_for('teacher_login') }}">
+          Sign In
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

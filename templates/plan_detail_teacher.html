@@ -1,0 +1,196 @@
+{% extends "base.html" %}
+{% block title %}Student Learning Plan — EduPath AI{% endblock %}
+
+{% block nav %}{% endblock %}
+
+{% block body %}
+
+<div class="dashboard-content no-sidebar">
+
+  <!-- HEADER -->
+  <div class="dashboard-header">
+
+    <h1>
+      👨‍🎓 {{ plan.full_name }}
+    </h1>
+
+    <p>
+      {{ plan.subject }} · {{ plan.level }}
+    </p>
+
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <h3>Risk Score</h3>
+
+      <div class="stat-number">
+        {{ plan.risk_score or 0 }}%
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Confidence</h3>
+
+      <div class="stat-number">
+        {{ plan.confidence }}%
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Study Duration</h3>
+
+      <div class="stat-number">
+        {{ plan.duration_weeks }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Study Time</h3>
+
+      <div class="stat-number"
+           style="font-size:1.2rem;">
+
+        {{ plan.study_time }}
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="dashboard-grid">
+
+    <!-- LEFT -->
+    <div>
+
+      <!-- AI PLAN -->
+      <div class="dashboard-card">
+
+        <h2>🚀 Learning Plan</h2>
+
+        <div class="ai-report">
+
+          <div class="markdown-content">
+  {{ plan.report_html | safe }}
+</div>
+
+        </div>
+
+      </div>
+
+      <!-- CHECKINS -->
+      <div class="dashboard-card"
+           style="margin-top:24px;">
+
+        <h2>📊 Weekly Check-ins</h2>
+
+        {% if checkins %}
+
+          {% for c in checkins %}
+
+          <div class="plan-item"
+               style="margin-bottom:16px;">
+
+            <h3>
+              Week {{ c.week_number }}
+            </h3>
+
+            <p>
+              Confidence:
+              <strong>{{ c.confidence }}%</strong>
+            </p>
+
+            <p style="margin-top:10px;">
+              {{ c.completed_tasks }}
+            </p>
+
+            {% if c.notes %}
+            <p style="margin-top:12px; color:#6b7280;">
+              {{ c.notes }}
+            </p>
+            {% endif %}
+
+          </div>
+
+          {% endfor %}
+
+        {% else %}
+
+          <p>
+            No weekly check-ins submitted yet.
+          </p>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+
+      <!-- GOAL -->
+      <div class="dashboard-card">
+
+        <h2>🎯 Student Goal</h2>
+
+        <p style="line-height:1.8;">
+          {{ plan.goal }}
+        </p>
+
+      </div>
+
+      <!-- STRUGGLES -->
+      <div class="dashboard-card"
+           style="margin-top:24px;">
+
+        <h2>⚠ Reported Struggles</h2>
+
+        <p style="line-height:1.8;">
+          {{ plan.struggles or 'No struggles reported.' }}
+        </p>
+
+      </div>
+
+      <!-- STUDENT INFO -->
+      <div class="dashboard-card"
+           style="margin-top:24px;">
+
+        <h2>👤 Student Information</h2>
+
+        <div class="student-meta">
+
+          <div class="meta-row">
+            <span>Name</span>
+            <strong>{{ plan.full_name }}</strong>
+          </div>
+
+          <div class="meta-row">
+            <span>Email</span>
+            <strong>{{ plan.email }}</strong>
+          </div>
+
+          <div class="meta-row">
+            <span>Year Group</span>
+            <strong>{{ plan.year_group or 'N/A' }}</strong>
+          </div>
+
+          <div class="meta-row">
+            <span>Created</span>
+            <strong>{{ plan.created_at[:10] }}</strong>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

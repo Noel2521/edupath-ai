@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>{% block title %}EduPath AI{% endblock %}</title>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%235b21b6'/><text x='7' y='24' font-size='18'>🎓</text></svg>">
+
+  {% block head %}{% endblock %}
+</head>
+
+<body>
+
+<!-- Flash Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <span
+      data-flash="{{ message }}"
+      data-flash-type="{{ category }}"
+      style="display:none">
+    </span>
+  {% endfor %}
+{% endwith %}
+
+<!-- =========================
+     NAVBAR
+========================= -->
+
+{% block nav %}
+<nav class="topnav">
+
+  <div class="topnav__container">
+
+    <!-- Brand -->
+    <a href="{{ url_for('index') }}" class="topnav__brand">
+
+      <div class="brand-icon">
+        🎓
+      </div>
+
+      <div class="brand-text">
+        EduPath <span>AI</span>
+      </div>
+
+    </a>
+
+    <!-- Right Side -->
+    <div class="topnav__right">
+
+      {% if session.get('role') == 'student' %}
+
+        <a href="{{ url_for('student_dashboard') }}"
+           class="nav-link-modern">
+          Dashboard
+        </a>
+
+        <a href="{{ url_for('logout') }}"
+           class="btn btn-outline">
+          Sign Out
+        </a>
+
+      {% elif session.get('role') == 'teacher' %}
+
+        <a href="{{ url_for('teacher_dashboard') }}"
+           class="nav-link-modern">
+          Dashboard
+        </a>
+
+        <a href="{{ url_for('logout') }}"
+           class="btn btn-outline">
+          Sign Out
+        </a>
+
+      {% else %}
+
+        <a href="{{ url_for('teacher_login') }}"
+           class="btn btn-outline">
+          Teacher Login
+        </a>
+
+        <a href="{{ url_for('student_login') }}"
+           class="btn btn-primary">
+          Student Login
+        </a>
+
+      {% endif %}
+
+    </div>
+
+  </div>
+
+</nav>
+{% endblock %}
+
+<!-- Page Content -->
+{% block body %}{% endblock %}
+
+<!-- Toasts -->
+<div class="toast-container"></div>
+
+<!-- Main JS -->
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% block scripts %}{% endblock %}
+
+</body>
+</html>

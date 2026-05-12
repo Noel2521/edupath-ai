@@ -1,0 +1,329 @@
+{% extends "base.html" %}
+{% block title %}Teacher Dashboard — EduPath AI{% endblock %}
+
+
+{% block nav %}
+
+<nav class="modern-topbar">
+
+  <div class="modern-topbar-left">
+
+    <a href="{{ url_for('teacher_dashboard') }}"
+       class="modern-brand">
+
+      🎓 EduPath AI
+
+    </a>
+
+  </div>
+
+  <div class="modern-topbar-right">
+
+    <span class="topbar-user">
+      {{ session.user_name }}
+    </span>
+
+    <a href="{{ url_for('logout') }}"
+       class="logout-btn">
+
+      Sign Out
+
+    </a>
+
+  </div>
+
+</nav>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="dashboard-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="sidebar-brand">
+      EduPath <span>AI</span>
+    </div>
+
+    <div class="sidebar-menu">
+
+      <a href="#" class="sidebar-link active">
+        📊 Analytics
+      </a>
+
+      <a href="#students" class="sidebar-link">
+        👥 Students
+      </a>
+
+      <a href="#courses" class="sidebar-link">
+        📖 Courses
+      </a>
+
+      <a href="#institution" class="sidebar-link">
+        🏛️ Institution
+      </a>
+
+      <a href="{{ url_for('logout') }}" class="sidebar-link">
+        🚪 Sign Out
+      </a>
+
+    </div>
+
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="dashboard-content">
+
+    <!-- HEADER -->
+    <div class="dashboard-header">
+
+      <h1>
+        Teacher Dashboard 🏫
+      </h1>
+
+      <p>
+        Monitor student performance, manage courses
+        and identify learners who need support.
+      </p>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-grid">
+
+      <div class="stat-card">
+        <h3>Total Students</h3>
+        <div class="stat-number">
+          {{ students|length }}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <h3>🔴 High Risk</h3>
+        <div class="stat-number">
+          {{ high }}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <h3>🟡 Medium Risk</h3>
+        <div class="stat-number">
+          {{ medium }}
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <h3>🟢 Low Risk</h3>
+        <div class="stat-number">
+          {{ low }}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- MAIN GRID -->
+    <div class="dashboard-grid">
+
+      <!-- LEFT -->
+      <div>
+
+        <!-- STUDENTS -->
+        <div class="dashboard-card" id="students">
+
+          <h2>👥 Student Overview</h2>
+
+          {% if all_plans %}
+
+          <div class="plan-list">
+
+            {% for plan in all_plans %}
+
+            {% set risk = plan.risk_score or 0 %}
+
+            <div class="plan-item">
+
+              <h3>{{ plan.full_name }}</h3>
+
+              <p>
+                {{ plan.subject }} ·
+                {{ plan.year_group or 'Unknown year' }}
+              </p>
+
+              {% if risk >= 70 %}
+                <span class="badge badge-high">
+                  🔴 High Risk — {{ risk }}%
+                </span>
+              {% elif risk >= 40 %}
+                <span class="badge badge-medium">
+                  🟡 Medium Risk — {{ risk }}%
+                </span>
+              {% else %}
+                <span class="badge badge-low">
+                  🟢 Low Risk — {{ risk }}%
+                </span>
+              {% endif %}
+
+              <div style="margin-top:18px;">
+
+                <a href="{{ url_for('teacher_view_plan', plan_id=plan.id) }}"
+                   class="btn btn-outline">
+
+                  View Full Plan →
+
+                </a>
+
+              </div>
+
+            </div>
+
+            {% endfor %}
+
+          </div>
+
+          {% else %}
+
+            <p>
+              No student plans generated yet.
+            </p>
+
+          {% endif %}
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div>
+
+        <!-- ADD COURSE -->
+        <div class="dashboard-card" id="courses">
+
+          <h2>➕ Add Course</h2>
+
+          <form method="POST"
+                action="{{ url_for('add_course_route') }}"
+                class="dashboard-form">
+
+            <input type="text"
+                   name="title"
+                   placeholder="Course Title"
+                   required>
+
+            <select name="qualification" required>
+              <option value="">Qualification Type</option>
+              <option>GCSE</option>
+              <option>AS-Level</option>
+              <option>A-Level</option>
+              <option>BTEC Level 3</option>
+              <option>T-Level</option>
+              <option>Access to HE</option>
+              <option>Bachelor's Degree</option>
+              <option>Master's Degree</option>
+            </select>
+
+            <select name="level">
+              <option>Year 10</option>
+              <option>Year 11</option>
+              <option>Year 12</option>
+              <option>Year 13</option>
+              <option>Year 1</option>
+              <option>Year 2</option>
+              <option>Year 3</option>
+            </select>
+
+            <textarea name="description"
+                      placeholder="Course Description"></textarea>
+
+            <button type="submit">
+              Add Course
+            </button>
+
+          </form>
+
+        </div>
+
+        <!-- COURSES -->
+        <div class="dashboard-card"
+             style="margin-top:24px;">
+
+          <h2>📖 Institution Courses</h2>
+
+          {% if courses %}
+
+            {% for c in courses %}
+
+            <div class="plan-item"
+                 style="margin-bottom:16px;">
+
+              <h3>{{ c.title }}</h3>
+
+              <p>
+                {{ c.qualification }} · {{ c.level }}
+              </p>
+
+              <form method="POST"
+                    action="{{ url_for('delete_course_route', course_id=c.id) }}"
+                    style="margin-top:12px;">
+
+                <button type="submit"
+                        class="btn btn-outline">
+
+                  Remove Course
+
+                </button>
+
+              </form>
+
+            </div>
+
+            {% endfor %}
+
+          {% else %}
+
+            <p>
+              No courses added yet.
+            </p>
+
+          {% endif %}
+
+        </div>
+
+        <!-- INSTITUTION -->
+        <div class="dashboard-card"
+             id="institution"
+             style="margin-top:24px;">
+
+          <h2>🏛️ Add Institution</h2>
+
+          <form method="POST"
+                action="{{ url_for('add_institution_route') }}"
+                class="dashboard-form">
+
+            <input type="text"
+                   name="name"
+                   placeholder="Institution Name"
+                   required>
+
+            <input type="text"
+                   name="city"
+                   placeholder="City">
+
+            <button type="submit">
+              Add Institution
+            </button>
+
+          </form>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+</div>
+
+{% endblock %}

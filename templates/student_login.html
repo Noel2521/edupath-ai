@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}
+Student Login — EduPath AI
+{% endblock %}
+
+{% block body %}
+
+<section class="auth-page">
+
+  <div class="auth-left">
+
+    <div class="auth-content">
+
+      <div class="auth-badge">
+        🎓 STUDENT PORTAL
+      </div>
+
+      <h1>
+        Welcome back,<br>
+        future achiever.
+      </h1>
+
+      <p>
+        Access your personalized learning roadmap,
+        weekly goals, progress tracking and AI study insights.
+      </p>
+
+      <div class="auth-points">
+
+        <div class="auth-point">
+          ✅ Personalized Study Plans
+        </div>
+
+        <div class="auth-point">
+          📈 Progress Tracking
+        </div>
+
+        <div class="auth-point">
+          🔔 Smart Weekly Reminders
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="auth-right">
+
+    <div class="auth-card">
+
+      <h2>Student Login</h2>
+
+      <p class="auth-subtitle">
+        Sign in to continue your learning journey.
+      </p>
+
+      <form method="POST">
+
+        <div class="form-group-modern">
+          <label>Email Address</label>
+
+          <input type="email"
+                 name="email"
+                 placeholder="student@example.com"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Password</label>
+
+          <input type="password"
+                 name="password"
+                 placeholder="Enter password"
+                 required>
+        </div>
+
+        <button type="submit" class="btn-auth">
+          Sign In
+        </button>
+        <div class="auth-footer-link">
+  Don’t have an account?
+  <a href="{{ url_for('student_register') }}">
+    Create Student Account
+  </a>
+</div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

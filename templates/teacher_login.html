@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}
+Teacher Login — EduPath AI
+{% endblock %}
+
+{% block body %}
+
+<section class="auth-page">
+
+  <div class="auth-left teacher-bg">
+
+    <div class="auth-content">
+
+      <div class="auth-badge">
+        📊 TEACHER DASHBOARD
+      </div>
+
+      <h1>
+        Empower every<br>
+        student's success.
+      </h1>
+
+      <p>
+        Monitor risk scores, manage classroom insights,
+        and track academic performance intelligently.
+      </p>
+
+      <div class="auth-points">
+
+        <div class="auth-point">
+          📘 Course Management
+        </div>
+
+        <div class="auth-point">
+          📊 Student Risk Analytics
+        </div>
+
+        <div class="auth-point">
+          🔐 Secure Institutional Access
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="auth-right">
+
+    <div class="auth-card">
+
+      <h2>Teacher Login</h2>
+
+      <p class="auth-subtitle">
+        Access your institution dashboard.
+      </p>
+
+      <form method="POST">
+
+        <div class="form-group-modern">
+          <label>Email Address</label>
+
+          <input type="email"
+                 name="email"
+                 placeholder="teacher@example.com"
+                 required>
+        </div>
+
+        <div class="form-group-modern">
+          <label>Password</label>
+
+          <input type="password"
+                 name="password"
+                 placeholder="Enter password"
+                 required>
+        </div>
+
+        <button type="submit" class="btn-auth">
+          Sign In
+        </button>
+        <div class="auth-footer-link">
+  Don’t have an account?
+  <a href="{{ url_for('teacher_register') }}">
+    Create Teacher Account
+  </a>
+</div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock %}

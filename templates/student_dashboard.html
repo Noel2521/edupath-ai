@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+{% block title %}Student Dashboard — EduPath AI{% endblock %}
+
+{% block nav %}
+
+<nav class="modern-topbar">
+
+  <div class="modern-topbar-left">
+
+    <a href="{{ url_for('student_dashboard') }}"
+       class="modern-brand">
+
+      🎓 EduPath AI
+
+    </a>
+
+  </div>
+
+  <div class="modern-topbar-right">
+
+    <span class="topbar-user">
+      {{ session.user_name }}
+    </span>
+
+    <a href="{{ url_for('logout') }}"
+       class="logout-btn">
+
+      Sign Out
+
+    </a>
+
+  </div>
+
+</nav>
+
+{% endblock %}
+
+{% block body %}
+
+<div class="dashboard-content no-sidebar">
+
+  <!-- HEADER -->
+  <div class="dashboard-header">
+
+    <h1>
+      Welcome back, {{ session.user_name.split(' ')[0] }} 👋
+    </h1>
+
+    <p>
+      Track your progress, generate AI-powered learning plans,
+      and stay academically ahead.
+    </p>
+
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-grid">
+
+    <div class="stat-card">
+      <h3>Total Plans</h3>
+      <div class="stat-number">
+        {{ plans|length }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Unread Reminders</h3>
+      <div class="stat-number">
+        {{ unread_count }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Available Courses</h3>
+      <div class="stat-number">
+        {{ courses|length }}
+      </div>
+    </div>
+
+    <div class="stat-card">
+      <h3>Latest Risk Score</h3>
+      <div class="stat-number">
+
+        {% if plans %}
+          {{ plans[0].risk_score or 0 }}%
+        {% else %}
+          0%
+        {% endif %}
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- GENERATE PLAN -->
+  <div class="dashboard-card">
+
+    <h2>✨ Generate Learning Plan</h2>
+
+    <form method="POST"
+          action="{{ url_for('student_generate') }}"
+          class="modern-form">
+
+      <div class="form-grid">
+
+        <div>
+          <label>Subject / Course</label>
+
+          <input type="text"
+                 name="subject"
+                 placeholder="e.g. A-Level Mathematics"
+                 required>
+        </div>
+
+        <div>
+          <label>Institution Course</label>
+
+          <select name="course_id">
+
+            <option value="">
+              Optional Course Link
+            </option>
+
+            {% for c in courses %}
+            <option value="{{ c.id }}">
+              {{ c.title }} ({{ c.qualification }})
+            </option>
+            {% endfor %}
+
+          </select>
+        </div>
+
+        <div>
+          <label>Academic Level</label>
+
+          <select name="level">
+            <option>GCSE — Foundation</option>
+            <option>GCSE — Higher</option>
+            <option>AS-Level</option>
+            <option selected>A-Level</option>
+            <option>BTEC Level 3</option>
+            <option>T-Level</option>
+            <option>Access to HE</option>
+            <option>Year 1 Degree</option>
+            <option>Year 2 Degree</option>
+            <option>Year 3 Degree</option>
+          </select>
+        </div>
+
+        <div>
+          <label>Study Duration</label>
+
+          <select name="duration_weeks">
+            <option value="2">2 Weeks</option>
+            <option value="4" selected>4 Weeks</option>
+            <option value="6">6 Weeks</option>
+            <option value="8">8 Weeks</option>
+            <option value="12">12 Weeks</option>
+          </select>
+        </div>
+
+      </div>
+
+      <div style="margin-top:20px;">
+
+        <label>Career / Academic Goal</label>
+
+        <input type="text"
+               name="goal"
+               placeholder="Become a Software Engineer"
+               required>
+
+      </div>
+
+      <div style="margin-top:20px;">
+
+        <label>Current Struggles</label>
+
+        <textarea name="struggles"
+                  placeholder="Topics or concepts you struggle with"></textarea>
+
+      </div>
+
+      <div class="form-grid"
+           style="margin-top:20px;">
+
+        <div>
+
+          <label>Daily Study Time</label>
+
+          <select name="study_time">
+            <option>30 minutes</option>
+            <option>45 minutes</option>
+            <option selected>1 hour</option>
+            <option>1.5 hours</option>
+            <option>2 hours</option>
+          </select>
+
+        </div>
+
+        <div>
+
+          <label>Confidence Level</label>
+
+          <div class="confidence-box">
+
+            <input type="range"
+                   name="confidence"
+                   min="0"
+                   max="100"
+                   value="50"
+                   id="confidenceRange">
+
+            <span id="confidenceValue">
+              50%
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <button type="submit"
+              class="generate-btn">
+
+        🚀 Generate My AI Learning Plan
+
+      </button>
+
+    </form>
+
+  </div>
+
+  <!-- LOWER GRID -->
+  <div class="dashboard-grid"
+       style="margin-top:24px;">
+
+    <!-- PLANS -->
+    <div class="dashboard-card">
+
+      <h2>📚 My Learning Plans</h2>
+
+      {% if plans %}
+
+      <div class="plan-list">
+
+        {% for plan in plans %}
+
+        {% set risk = plan.risk_score or 0 %}
+
+        <div class="plan-item">
+
+          <h3>{{ plan.subject }}</h3>
+
+          <p>
+            {{ plan.level }} ·
+            {{ plan.duration_weeks }} weeks
+          </p>
+
+          {% if risk >= 70 %}
+            <span class="badge badge-high">
+              🔴 High Risk — {{ risk }}%
+            </span>
+          {% elif risk >= 40 %}
+            <span class="badge badge-medium">
+              🟡 Medium Risk — {{ risk }}%
+            </span>
+          {% else %}
+            <span class="badge badge-low">
+              🟢 Low Risk — {{ risk }}%
+            </span>
+          {% endif %}
+
+          <div style="margin-top:18px;">
+
+            <a href="{{ url_for('view_plan', plan_id=plan.id) }}"
+               class="btn btn-outline">
+
+              View Plan →
+
+            </a>
+
+          </div>
+
+        </div>
+
+        {% endfor %}
+
+      </div>
+
+      {% else %}
+
+      <p>No learning plans yet.</p>
+
+      {% endif %}
+
+    </div>
+
+    <!-- RIGHT -->
+    <div>
+
+      <!-- REMINDERS -->
+      <div class="dashboard-card">
+
+        <h2>🔔 Weekly Reminders</h2>
+
+        {% if reminders %}
+
+          {% for r in reminders %}
+
+          <div class="plan-item"
+               style="margin-bottom:16px;">
+
+            <p style="margin-bottom:8px;">
+              {{ r.message }}
+            </p>
+
+            <small style="color:#6b7280;">
+              Due: {{ r.due_date }}
+            </small>
+
+          </div>
+
+          {% endfor %}
+
+        {% else %}
+
+          <p>No reminders yet.</p>
+
+        {% endif %}
+
+      </div>
+
+      <!-- COURSES -->
+      <div class="dashboard-card"
+           style="margin-top:24px;">
+
+        <h2>📖 Available Courses</h2>
+
+        {% if courses %}
+
+          {% for c in courses %}
+
+          <div class="plan-item"
+               style="margin-bottom:16px;">
+
+            <h3>{{ c.title }}</h3>
+
+            <p>
+              {{ c.qualification }} · {{ c.level }}
+            </p>
+
+          </div>
+
+          {% endfor %}
+
+        {% else %}
+
+          <p>No courses available yet.</p>
+
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+const confidenceRange =
+document.getElementById("confidenceRange");
+
+const confidenceValue =
+document.getElementById("confidenceValue");
+
+if (confidenceRange) {
+
+  confidenceRange.addEventListener("input", () => {
+
+    confidenceValue.innerText =
+      confidenceRange.value + "%";
+
+  });
+
+}
+
+</script>
+
+{% endblock %}
