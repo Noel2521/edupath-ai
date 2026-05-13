@@ -22,9 +22,10 @@ from core.database import (
 )
 from core.ai_engine import generate_learning_plan, extract_risk_score
 import markdown
+import os
 
 app = Flask(__name__)
-app.secret_key = "edupath-secret-key-change-in-production"
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
 # ─────────── Init DB ───────────
 create_tables()
