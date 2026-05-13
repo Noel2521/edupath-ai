@@ -187,12 +187,12 @@ def student_generate():
 @student_required
 def view_plan(plan_id):
     plan = get_plan_by_id(plan_id)
-    plan["report_html"] = markdown.markdown(
-    plan["report"],
-    extensions=["extra"]
-)
     if not plan or plan["student_id"] != session["user_id"]:
         return redirect(url_for("student_dashboard"))
+    plan["report_html"] = markdown.markdown(
+        plan["report"],
+        extensions=["extra"]
+    )
     checkins = get_checkins_by_plan(plan_id)
     return render_template("plan_detail.html", plan=plan, checkins=checkins)
 
