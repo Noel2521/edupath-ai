@@ -221,12 +221,15 @@
 
       </div>
 
-      <button type="submit"
-              class="generate-btn">
+      <button type="submit" class="generate-btn" id="generateBtn" onclick="showLoading()">
+  🚀 Generate My Learning Plan
+</button>
 
-        🚀 Generate My AI Learning Plan
-
-      </button>
+<div id="loadingMsg" style="display:none; text-align:center; margin-top:20px;">
+  <p style="color:#8b5cf6; font-weight:700; font-size:1.1rem;">
+    ⏳ Generating your personalised plan... this may take 10–15 seconds.
+  </p>
+</div>
 
     </form>
 
@@ -388,6 +391,14 @@ if (confidenceRange) {
 
 }
 
+</script>
+
+<script>
+function showLoading() {
+  document.getElementById("generateBtn").disabled = true;
+  document.getElementById("generateBtn").innerText = "Generating...";
+  document.getElementById("loadingMsg").style.display = "block";
+}
 </script>
 
 {% endblock %}

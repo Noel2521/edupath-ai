@@ -176,14 +176,17 @@ def student_generate():
     duration_weeks = int(request.form.get("duration_weeks", 4))
     course_id = request.form.get("course_id") or None
 
-    report = generate_learning_plan(subject, level, goal, struggles, confidence, study_time, duration_weeks)
-    risk_score = extract_risk_score(report) or 0
-
-    plan_id = save_learning_plan(
-        student_id, course_id, subject, level, goal, struggles,
-        confidence, study_time, duration_weeks, report, risk_score
-    )
-    return redirect(url_for("view_plan", plan_id=plan_id))
+    try:
+        report = generate_learning_plan(subject, level, goal, struggles, confidence, study_time, duration_weeks)
+        risk_score = extract_risk_score(report) or 0
+        plan_id = save_learning_plan(
+            student_id, course_id, subject, level, goal, struggles,
+            confidence, study_time, duration_weeks, report, risk_score
+        )
+        return redirect(url_for("view_plan", plan_id=plan_id))
+    except Exception as e:
+        flash("Something went wrong generating your plan. Please try again.", "error")
+        return redirect(url_for("student_dashboard"))
 
 
 @app.route("/student/plan/<int:plan_id>")
