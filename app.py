@@ -253,7 +253,8 @@ def teacher_dashboard():
 def teacher_view_plan(plan_id):
 
     plan = get_plan_by_id(plan_id)
-
+    if not plan:
+        return redirect(url_for("teacher_dashboard"))
     plan["report_html"] = markdown.markdown(
         plan["report"],
         extensions=["extra"]
