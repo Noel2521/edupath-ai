@@ -67,7 +67,7 @@ def student_login():
         return redirect(url_for("student_dashboard"))
     error = None
     if request.method == "POST":
-        student = login_student(request.form["email"], request.form["password"])
+        student = login_student(request.form["email"], request.form["password"], request.remote_addr)
         if student:
             session["role"] = "student"
             session["user_id"] = student["id"]
@@ -106,7 +106,7 @@ def teacher_login():
         return redirect(url_for("teacher_dashboard"))
     error = None
     if request.method == "POST":
-        teacher = login_teacher(request.form["email"], request.form["password"])
+        teacher = login_teacher(request.form["email"], request.form["password"],request.remote_addr)
         if teacher:
             session["role"] = "teacher"
             session["user_id"] = teacher["id"]

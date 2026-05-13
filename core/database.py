@@ -210,13 +210,17 @@ def register_student(institution_id, full_name, email, password, year_group="", 
         conn.close()
 
 
-def login_student(email, password):
+def login_student(email, password, ip_address="unknown"):
     conn = get_connection()
+    if count_failed_logins(email, ip_address) >= 5:
+        conn.close()
+        return None
     row = conn.execute(
         "SELECT * FROM students WHERE email=?",
         (email,)
     ).fetchone()
     if row and not verify_password(password, row["password_hash"]):
+        record_failed_login(email, ip_address)
         row = None
     if row:
         conn.execute("UPDATE students SET last_login=? WHERE id=?", (datetime.now(), row["id"]))
@@ -240,13 +244,17 @@ def register_teacher(institution_id, full_name, email, password, role="teacher")
         conn.close()
 
 
-def login_teacher(email, password):
+def login_teacher(email, password, ip_address="unknown"):
     conn = get_connection()
+    if count_failed_logins(email, ip_address) >= 5:
+        conn.close()
+        return None
     row = conn.execute(
         "SELECT * FROM teachers WHERE email=?",
         (email,)
     ).fetchone()
     if row and not verify_password(password, row["password_hash"]):
+        record_failed_login(email, ip_address)
         row = None
     if row:
         conn.execute("UPDATE teachers SET last_login=? WHERE id=?", (datetime.now(), row["id"]))
