@@ -26,6 +26,8 @@ import os
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
+from flask_wtf.csrf import CSRFProtect
+csrf = CSRFProtect(app)
 
 # ─────────── Init DB ───────────
 create_tables()
