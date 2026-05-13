@@ -2,18 +2,13 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>EduPath AI</title>
-
-  <link rel="stylesheet"
-        href="{{ url_for('static', filename='css/main.css') }}">
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,700&display=swap" rel="stylesheet">
-
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -26,23 +21,16 @@
 
   <div class="hero-overlay"></div>
 
+  <!-- Logo top left -->
+  <div style="position: absolute; top: 24px; left: 40px; z-index: 10;">
+    <img src="{{ url_for('static', filename='images/edupath_logo.png') }}"
+         alt="EduPath AI" style="height: 180px; width: auto;">
+  </div>
+
   <div class="hero-modern__inner">
 
     <!-- LEFT -->
     <div class="hero-left">
-
-      <!-- LARGE BRAND -->
-      <div class="hero-brand">
-
-        <div class="hero-brand-icon">
-          🎓
-        </div>
-
-        <div class="hero-brand-text">
-          EduPath <span>AI</span>
-        </div>
-
-      </div>
 
       <div class="hero-badge">
         ✨ AI-POWERED EDUCATION PLATFORM
@@ -58,40 +46,30 @@
         empower teachers, and streamline academic success.
       </p>
 
-      <!-- MINI FEATURES -->
       <div class="hero-features-inline">
 
         <div class="mini-feature">
-
           <div class="mini-icon">👥</div>
-
           <div>
             <strong>Students First</strong>
             <span>Personalized guidance</span>
           </div>
-
         </div>
 
         <div class="mini-feature">
-
           <div class="mini-icon">📈</div>
-
           <div>
             <strong>Data Driven</strong>
             <span>AI-powered insights</span>
           </div>
-
         </div>
 
         <div class="mini-feature">
-
           <div class="mini-icon">🛡️</div>
-
           <div>
             <strong>Secure & Reliable</strong>
             <span>Your data is protected</span>
           </div>
-
         </div>
 
       </div>
@@ -101,50 +79,22 @@
     <!-- RIGHT -->
     <div class="hero-right">
 
-      <!-- STUDENT -->
-      <a href="{{ url_for('student_login') }}"
-         class="portal-modern portal-student">
-
-        <div class="portal-modern__icon">
-          🎓
-        </div>
-
+      <a href="{{ url_for('student_login') }}" class="portal-modern portal-student">
+        <div class="portal-modern__icon">🎓</div>
         <div class="portal-modern__content">
-
           <h3>Student Portal</h3>
-
-          <p>
-            Personalized roadmap, weekly goals,
-            progress tracking and more.
-          </p>
-
+          <p>Personalized roadmap, weekly goals, progress tracking and more.</p>
         </div>
-
         <div class="portal-arrow">›</div>
-
       </a>
 
-      <!-- TEACHER -->
-      <a href="{{ url_for('teacher_login') }}"
-         class="portal-modern portal-teacher">
-
-        <div class="portal-modern__icon">
-          📊
-        </div>
-
+      <a href="{{ url_for('teacher_login') }}" class="portal-modern portal-teacher">
+        <div class="portal-modern__icon">📊</div>
         <div class="portal-modern__content">
-
           <h3>Teacher Dashboard</h3>
-
-          <p>
-            Monitor risk scores, manage courses,
-            track class progress and more.
-          </p>
-
+          <p>Monitor risk scores, manage courses, track class progress and more.</p>
         </div>
-
         <div class="portal-arrow">›</div>
-
       </a>
 
     </div>
@@ -158,106 +108,54 @@
 ========================================= -->
 
 <section class="features-modern">
-
   <div class="container">
 
     <div class="section-header-modern">
-
-      <h2>
-        Everything your institution needs
-      </h2>
-
-      <p>
-        Designed around the UK curriculum —
-        from GCSEs to postgraduate education.
-      </p>
-
+      <h2>Everything your institution needs</h2>
+      <p>Designed around the UK curriculum — from GCSEs to postgraduate education.</p>
     </div>
 
     <div class="features-grid-modern">
 
       <div class="feature-card-modern">
-
         <div class="feature-modern-icon">🗓️</div>
-
         <h4>Multi-Week Plans</h4>
-
-        <p>
-          AI generates realistic 2–12 week study plans
-          based on the student's available time.
-        </p>
-
+        <p>AI generates realistic 2–12 week study plans based on the student's available time.</p>
       </div>
 
       <div class="feature-card-modern">
-
         <div class="feature-modern-icon">🔔</div>
-
         <h4>Weekly Reminders</h4>
-
-        <p>
-          Automated reminders keep students accountable
-          and consistent every week.
-        </p>
-
+        <p>Automated reminders keep students accountable and consistent every week.</p>
       </div>
 
       <div class="feature-card-modern">
-
         <div class="feature-modern-icon">🛡️</div>
-
         <h4>Risk Intelligence</h4>
-
-        <p>
-          Teachers receive AI-powered risk scores
-          to identify struggling learners early.
-        </p>
-
+        <p>Teachers receive AI-powered risk scores to identify struggling learners early.</p>
       </div>
 
       <div class="feature-card-modern">
-
         <div class="feature-modern-icon">📘</div>
-
         <h4>Institution Courses</h4>
-
-        <p>
-          Supports GCSEs, A-Levels, BTECs,
-          T-Levels, undergraduate and postgraduate.
-        </p>
-
+        <p>Supports GCSEs, A-Levels, BTECs, T-Levels, undergraduate and postgraduate.</p>
       </div>
 
       <div class="feature-card-modern">
-
         <div class="feature-modern-icon">🔐</div>
-
         <h4>Separate Logins</h4>
-
-        <p>
-          Students and teachers access
-          completely secure dedicated portals.
-        </p>
-
+        <p>Students and teachers access completely secure dedicated portals.</p>
       </div>
 
       <div class="feature-card-modern">
-
         <div class="feature-modern-icon">✅</div>
-
         <h4>Progress Check-ins</h4>
-
-        <p>
-          Weekly self-assessment keeps students
-          and teachers informed on academic growth.
-        </p>
-
+        <p>Weekly self-assessment keeps students and teachers informed on academic growth.</p>
       </div>
 
     </div>
 
   </div>
-
 </section>
 
 <!-- =========================================
@@ -265,12 +163,7 @@
 ========================================= -->
 
 <section class="footer-strip-modern">
-
-  <p>
-    🎓 Aligned with GCSEs · A-Levels · BTECs · T-Levels ·
-    Access to HE · Undergraduate · Postgraduate
-  </p>
-
+  <p>🎓 Aligned with GCSEs · A-Levels · BTECs · T-Levels · Access to HE · Undergraduate · Postgraduate</p>
 </section>
 
 </body>
